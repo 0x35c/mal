@@ -35,15 +35,12 @@ objs/%.o: srcs/%.cpp
 
 clean:
 	rm -rf objs
-	@echo "$(NAME) objects removed"
-
-fclean: clean
 	rm -f $(NAME)
-	@echo "$(NAME) binary removed"
+	@echo "$(NAME) binary and objects removed"
 
-re: fclean all
+re: clean all
 
 run:
 	./$(NAME)
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean re
