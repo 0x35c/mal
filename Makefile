@@ -13,18 +13,20 @@
 NAME := mal
 
 SRCS := main.cpp\
+		readline.cpp\
 		step0_repl.cpp
 
 CC := g++
 
 CFLAGS := -Wall -Wextra -Werror -Wshadow -O2 -g
+LIBS := -lreadline
 
 OBJS := $(addprefix objs/, $(SRCS:.cpp=.o))
 
 all: $(NAME) 
 
 $(NAME): $(OBJS)
-	$(CC) $(OBJS) -o $(NAME)
+	$(CC) $(OBJS) -o $(NAME) $(LIBS)
 	@echo "$(NAME) compiled"
 
 objs/%.o: srcs/%.cpp

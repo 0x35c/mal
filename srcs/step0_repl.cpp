@@ -1,4 +1,4 @@
-#include "../includes/types.hpp"
+#include "../includes/readline.hpp"
 #include <iostream>
 
 const String &READ(const String &input);
@@ -28,11 +28,11 @@ const String &rep(const String &ast)
 
 int main_loop(void)
 {
-	std::string input;
-	std::cout << std::getenv("USER") << "> ";
-	while (std::getline(std::cin, input)) {
+	String input;
+	String user = std::getenv("USER");
+	String prompt = user + "> ";
+	while (Readline(prompt, input)) {
 		std::cout << rep(input) << std::endl;
-		std::cout << std::getenv("USER") << "> ";
 	}
 	return (0);
 }
