@@ -38,7 +38,9 @@ clean:
 	rm -f $(NAME)
 	@echo "$(NAME) binary and objects removed"
 
-re: clean all
+re:
+	make clean
+	make all
 
 run:
 	./$(NAME)
