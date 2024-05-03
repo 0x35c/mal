@@ -31,7 +31,6 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(OBJS) -o $(NAME) $(LIBS)
-	@echo "$(NAME) compiled"
 
 objs/%.o: srcs/%.cpp
 	mkdir -p $(@D)
@@ -40,13 +39,12 @@ objs/%.o: srcs/%.cpp
 clean:
 	rm -rf objs
 	rm -f $(NAME)
-	@echo "$(NAME) binary and objects removed"
 
 re:
 	make clean
 	make all
 
 run:
-	./$(NAME)
+	@./$(NAME)
 
 .PHONY: all clean re

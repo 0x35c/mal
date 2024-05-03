@@ -6,7 +6,7 @@ MalType *read_str(const String &s)
 	std::vector<String> tokens;
 	try {
 		tokens = tokenize(s);
-	} catch (std::out_of_range e) {
+	} catch (std::invalid_argument e) {
 		std::cout << "Invalid format: " << e.what() << std::endl;
 		return (NULL);
 	}
@@ -40,6 +40,14 @@ static MalType *read_atom(Reader &reader)
 	reader.next();
 	if (tok[0] <= '9' && tok[0] >= '0')
 		return new MalNumber(std::atoi(tok.c_str()));
+	else if (tok[0] == '"')
+		return new MalString(tok);
+	else if (tok == "nil")
+		return new MalNil();
+	else if (tok == "true")
+		return new MalTrue();
+	else if (tok == "false")
+		return new MalFalse();
 	else
 		return new MalSymbol(tok);
 }

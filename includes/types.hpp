@@ -10,7 +10,7 @@ class MalType
       public:
 	virtual ~MalType(){};
 
-	enum Type { SYMBOL, LIST, STRING, NUMBER };
+	enum Type { NUMBER, SYMBOL, NIL, TRUE, FALSE, STRING, LIST };
 
 	Type type;
 
@@ -35,7 +35,7 @@ class MalNumber : public MalType
 		// thanks kdx (kind ugly tho ngl)
 		char buf[64] = {};
 		snprintf(buf, sizeof(buf) - 1, "%d", value);
-		return buf;
+		return "NUMBER " + String{buf};
 	};
 };
 
@@ -54,7 +54,55 @@ class MalSymbol : public MalType
 
 	virtual String str() const
 	{
-		return value;
+		return "SYMBOL " + value;
+	};
+};
+
+class MalNil : public MalType
+{
+      public:
+	MalNil()
+	{
+		type = MalType::Type::NIL;
+	};
+
+	virtual ~MalNil(){};
+
+	virtual String str() const
+	{
+		return "NIL";
+	};
+};
+
+class MalTrue : public MalType
+{
+      public:
+	MalTrue()
+	{
+		type = MalType::Type::TRUE;
+	};
+
+	virtual ~MalTrue(){};
+
+	virtual String str() const
+	{
+		return "TRUE";
+	};
+};
+
+class MalFalse : public MalType
+{
+      public:
+	MalFalse()
+	{
+		type = MalType::Type::FALSE;
+	};
+
+	virtual ~MalFalse(){};
+
+	virtual String str() const
+	{
+		return "FALSE";
 	};
 };
 
@@ -74,7 +122,7 @@ class MalString : public MalType
 
 	virtual String str() const
 	{
-		return value;
+		return "STRING " + value;
 	};
 };
 

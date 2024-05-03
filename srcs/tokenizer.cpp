@@ -51,7 +51,7 @@ std::vector<String> tokenize(const String &s)
 		} else if (is_symbol(s[i])) {
 			tok += s[i];
 		} else if (s[i] == '"') {
-			i++;
+			tok += s[i++];
 			while (i < s.length() && s[i] != '"') {
 				if (s[i] == '\\') {
 					i++;
@@ -62,7 +62,9 @@ std::vector<String> tokenize(const String &s)
 				i++;
 			}
 			if (i == s.length() && s[i - 1] != '"')
-				throw std::out_of_range("Missing \" operand");
+				throw std::invalid_argument(
+				    "Missing \" operand");
+			tok += s[i];
 		} else {
 			while (i < s.length() && is_non_special(s[i]))
 				tok += s[i++];
