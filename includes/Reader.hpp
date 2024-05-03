@@ -2,8 +2,6 @@
 
 #include "types.hpp"
 
-#include <iostream>
-
 class Reader
 {
       private:
@@ -28,4 +26,9 @@ class Reader
 	};
 };
 
+std::vector<String> tokenize(const String &s);
+
 MalType *read_str(const String &s);
+static MalType *read_form(Reader &reader);
+static MalType *read_list(Reader &reader);
+static MalType *read_atom(Reader &reader);

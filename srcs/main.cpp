@@ -14,13 +14,14 @@ MalType *EVAL(MalType *e)
 
 const String PRINT(MalType *e)
 {
-	return pr_str(e);
+	return pr_str(e, true);
 }
 
 void rep(const String &s)
 {
 	const auto e = EVAL(READ(s));
-	std::cout << e->str() << std::endl;
+	if (e)
+		std::cout << e->str() << std::endl;
 	delete e;
 }
 
