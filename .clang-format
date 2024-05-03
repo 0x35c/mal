@@ -3,7 +3,7 @@ IndentWidth: 8
 UseTab: AlignWithSpaces
 BreakBeforeBraces: Linux
 AllowShortIfStatementsOnASingleLine: Never
-AllowShortFunctionsOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: None
 IndentCaseLabels: false
 ColumnLimit: 80
 AlignConsecutiveMacros: true

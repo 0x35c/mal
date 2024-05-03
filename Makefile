@@ -14,11 +14,13 @@ NAME := mal
 
 SRCS := main.cpp\
 		readline.cpp\
-		step0_repl.cpp
+		reader.cpp\
+		printer.cpp
 
 CC := g++
 
-CFLAGS := -Wall -Wextra -Werror -Wshadow -O2 -g
+CFLAGS := -Wall -Wextra -Werror -Wshadow -g -iquote includes --std=c++20 #-O2
+
 LIBS := -lreadline
 
 OBJS := $(addprefix objs/, $(SRCS:.cpp=.o))
