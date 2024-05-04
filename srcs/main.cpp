@@ -20,8 +20,7 @@ const String PRINT(MalType *e)
 void rep(const String &s)
 {
 	const auto e = EVAL(READ(s));
-	if (e)
-		std::cout << e->str(true) << std::endl;
+	std::cout << PRINT(e) << std::endl;
 	delete e;
 }
 
