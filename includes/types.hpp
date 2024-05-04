@@ -103,7 +103,6 @@ class MalFalse : public MalType
 	};
 };
 
-// Not implemented yet, tbd
 class MalString : public MalType
 {
       private:
@@ -123,7 +122,7 @@ class MalString : public MalType
 			return value;
 		String readable;
 		std::size_t i = 1;
-		while (i < value.length() - 2) {
+		while (i < value.length() - 1) {
 			if (value[i] == '\\') {
 				i++;
 				if (value.at(i) == 'n') {
@@ -173,5 +172,10 @@ class MalList : public MalType
 	void add(MalType *e)
 	{
 		list.push_back(e);
+	}
+
+	const std::size_t size() const
+	{
+		return (list.size());
 	}
 };

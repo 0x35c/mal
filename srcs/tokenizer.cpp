@@ -62,8 +62,8 @@ std::vector<String> tokenize(const String &s)
 			}
 			if (i == s.length() && s[i - 1] != '"')
 				throw std::invalid_argument(
-				    "Missing \" operand");
-			tokens.push_back(s.substr(start, i));
+				    "missing '\"' operand");
+			tokens.push_back(s.substr(start, i - start + 1));
 			i++;
 			continue;
 		}
