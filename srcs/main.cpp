@@ -1,25 +1,33 @@
+#include "Environment.hpp"
 #include "Reader.hpp"
 #include "printer.hpp"
 #include "readline.hpp"
 
-MalType *READ(const String &s)
+static MalType *READ(const String &s)
 {
 	return read_str(s);
 }
 
-MalType *EVAL(MalType *e)
+static MalType *EVAL(MalType *ast, MalEnv env)
 {
-	return e;
+	MalList *list = dynamic_cast<MalList *>(ast);
+	if (!list)
+		return eval_ast(ast, env);
+	if (list->empty())
+		return ast;
+	MalList *new_list = dynamic_cast<MalList *>(eval_ast(ast, env));
+	return ast;
 }
 
-const String PRINT(MalType *e)
+static const String PRINT(MalType *ast)
 {
-	return pr_str(e, true);
+	return pr_str(ast, true);
 }
 
-void rep(const String &s)
+static void rep(const String &s)
 {
-	const auto e = EVAL(READ(s));
+	MalEnv env;
+	const auto e = EVAL(READ(s), env);
 	std::cout << PRINT(e) << std::endl;
 	delete e;
 }

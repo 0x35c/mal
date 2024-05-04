@@ -179,4 +179,9 @@ class MalList : public MalType
 	{
 		return (list.size());
 	}
+
+	bool empty() const
+	{
+		return size() == 0;
+	}
 };

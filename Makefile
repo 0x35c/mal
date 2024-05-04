@@ -17,7 +17,8 @@ SRCS := main.cpp\
 		tokenizer.cpp\
 		utils.cpp\
 		reader.cpp\
-		printer.cpp
+		printer.cpp\
+		eval.c
 
 CC := g++
 
