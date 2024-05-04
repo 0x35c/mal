@@ -15,6 +15,7 @@ NAME := mal
 SRCS := main.cpp\
 		readline.cpp\
 		tokenizer.cpp\
+		utils.cpp\
 		reader.cpp\
 		printer.cpp
 

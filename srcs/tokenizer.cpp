@@ -1,45 +1,17 @@
-#include "types.hpp"
-#include <iostream>
+#include "utils.hpp"
 #include <stdexcept>
-
-static bool contains(const String &s, char c);
-static bool is_space(char c);
-static bool is_symbol(char c);
-static bool is_non_special(char c);
-
-static bool contains(const String &s, char c)
-{
-	return s.find(c) != String::npos;
-}
-
-static bool is_space(char c)
-{
-	return contains("\t\n\f\r, ", c);
-}
-
-static bool is_symbol(char c)
-{
-	return contains("[]{}()'`~^@", c);
-}
-
-static bool is_non_special(char c)
-{
-	return !is_space(c) && !is_symbol(c) && !contains("\"", c);
-}
 
 std::vector<String> tokenize(const String &s)
 {
 	std::vector<String> tokens;
+
+	// We don't need comments lines
+	if (s[0] == ';')
+		return {};
 	std::size_t i = 0;
 	while (i < s.length()) {
 		if (is_space(s[i])) {
 			i++;
-			continue;
-		}
-		// We don't need comments ig??
-		if (s[i] == ';') {
-			while (i < s.length() && s.at(i) != '\n')
-				i++;
 			continue;
 		}
 

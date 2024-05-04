@@ -1,4 +1,5 @@
 #include "Reader.hpp"
+#include "utils.hpp"
 #include <iostream>
 
 MalType *read_str(const String &s)
@@ -39,16 +40,16 @@ static MalType *read_atom(Reader &reader)
 {
 	const String tok = reader.peek();
 	reader.next();
-	if (tok[0] <= '9' && tok[0] >= '0')
+	if (is_digit(tok[0]))
 		return new MalNumber(std::atoi(tok.c_str()));
 	else if (tok[0] == '"')
 		return new MalString(tok);
-	else if (tok == "nil")
-		return new MalNil();
 	else if (tok == "true")
 		return new MalTrue();
 	else if (tok == "false")
 		return new MalFalse();
+	else if (tok.empty())
+		return new MalNil();
 	else
 		return new MalSymbol(tok);
 }
