@@ -164,7 +164,8 @@ class MalList : public MalType
 		for (auto it : list) {
 			s += it->str(print_readably) + " ";
 		};
-		s.erase(s.length() - 1, 1);
+		if (s.at(s.length() - 1) == ' ')
+			s.erase(s.length() - 1, 1);
 		s += ")";
 		return s;
 	};
