@@ -21,7 +21,7 @@ void rep(const String &s)
 {
 	const auto e = EVAL(READ(s));
 	if (e)
-		std::cout << e->str() << std::endl;
+		std::cout << e->str(true) << std::endl;
 	delete e;
 }
 

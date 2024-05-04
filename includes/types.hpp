@@ -14,7 +14,7 @@ class MalType
 
 	Type type;
 
-	virtual String str() const = 0;
+	virtual String str(bool print_readably) const = 0;
 };
 
 class MalNumber : public MalType
@@ -30,7 +30,7 @@ class MalNumber : public MalType
 
 	virtual ~MalNumber(){};
 
-	virtual String str() const
+	virtual String str(bool) const
 	{
 		// thanks kdx (kind ugly tho ngl)
 		char buf[64] = {};
@@ -52,7 +52,7 @@ class MalSymbol : public MalType
 
 	virtual ~MalSymbol(){};
 
-	virtual String str() const
+	virtual String str(bool) const
 	{
 		return "SYMBOL " + value;
 	};
@@ -68,7 +68,7 @@ class MalNil : public MalType
 
 	virtual ~MalNil(){};
 
-	virtual String str() const
+	virtual String str(bool) const
 	{
 		return "NIL";
 	};
@@ -84,7 +84,7 @@ class MalTrue : public MalType
 
 	virtual ~MalTrue(){};
 
-	virtual String str() const
+	virtual String str(bool) const
 	{
 		return "TRUE";
 	};
@@ -100,7 +100,7 @@ class MalFalse : public MalType
 
 	virtual ~MalFalse(){};
 
-	virtual String str() const
+	virtual String str(bool) const
 	{
 		return "FALSE";
 	};
@@ -120,7 +120,8 @@ class MalString : public MalType
 
 	virtual ~MalString(){};
 
-	virtual String str() const
+	// TODO print_readably implementation
+	virtual String str(bool print_readably) const
 	{
 		return "STRING " + value;
 	};
@@ -143,11 +144,11 @@ class MalList : public MalType
 			delete it;
 	};
 
-	virtual String str() const
+	virtual String str(bool print_readably) const
 	{
 		String s = "(";
 		for (auto it : list) {
-			s += it->str() + " ";
+			s += it->str(print_readably) + " ";
 		};
 		s.erase(s.length() - 1, 1);
 		s += ")";
