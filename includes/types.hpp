@@ -32,10 +32,7 @@ class MalNumber : public MalType
 
 	virtual String str(bool) const
 	{
-		// thanks kdx (kind ugly tho ngl)
-		char buf[64] = {};
-		snprintf(buf, sizeof(buf) - 1, "%d", value);
-		return "NUMBER " + String{buf};
+		return std::to_string(value);
 	};
 };
 
@@ -54,7 +51,7 @@ class MalSymbol : public MalType
 
 	virtual String str(bool) const
 	{
-		return "SYMBOL " + value;
+		return value;
 	};
 };
 
@@ -120,10 +117,28 @@ class MalString : public MalType
 
 	virtual ~MalString(){};
 
-	// TODO print_readably implementation
 	virtual String str(bool print_readably) const
 	{
-		return "STRING " + value;
+		if (!print_readably)
+			return value;
+		String readable;
+		std::size_t i = 1;
+		while (i < value.length() - 2) {
+			if (value[i] == '\\') {
+				i++;
+				if (value.at(i) == 'n') {
+					readable += '\n';
+					i++;
+				} else if (value.at(i) == '\\') {
+					readable += '\\';
+					i++;
+				}
+				continue;
+			}
+			readable += value[i];
+			i++;
+		}
+		return readable;
 	};
 };
 
