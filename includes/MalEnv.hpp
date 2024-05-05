@@ -3,19 +3,23 @@
 #include "types.hpp"
 #include <map>
 
+typedef std::map<String, MalType *> EnvMap;
+
 class MalEnv
 {
       private:
-	typedef std::map<String, MalType *> EnvMap;
 	EnvMap m_map;
+	MalEnv *m_outer;
 
       public:
 	MalEnv();
+	MalEnv(const EnvMap &outer);
 
 	~MalEnv(){};
 
+	void set(const String &key, MalType *value);
 	MalType *find(const String &symbol);
+	MalType *get(const String &symbol);
 };
 
-MalType *eval_ast(MalType *ast, MalEnv env);
 MalType *EVAL(MalType *ast, MalEnv env);

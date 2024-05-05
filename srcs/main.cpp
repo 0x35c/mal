@@ -8,30 +8,51 @@ static MalType *READ(const String &s)
 	return read_str(s);
 }
 
-MalType *EVAL(MalType *ast, MalEnv env)
-{
-	MalList *list = dynamic_cast<MalList *>(ast);
-	if (!list)
-		return eval_ast(ast, env);
-	if (list->empty())
-		return ast;
-	MalList *new_list = dynamic_cast<MalList *>(eval_ast(ast, env));
-	if (!new_list)
-		return NULL;
-	MalFunc *func = dynamic_cast<MalFunc *>(new_list->list[0]);
-	if (func)
-		return func->apply(new_list->list[1], new_list->list[2]);
-	return NULL;
-}
-
 static const String PRINT(MalType *ast)
 {
 	return pr_str(ast, true);
 }
 
+void init_env(MalEnv &env)
+{
+	env.set("+", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			if (!x || !y)
+				throw std::invalid_argument(
+				    "not a number on symbol '+'");
+			return new MalNumber(x->value + y->value);
+		}));
+	env.set("-", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			if (!x || !y)
+				throw std::invalid_argument(
+				    "not a number on symbol '-'");
+			return new MalNumber(x->value - y->value);
+		}));
+	env.set("*", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			if (!x || !y)
+				throw std::invalid_argument(
+				    "not a number on symbol '*'");
+			return new MalNumber(x->value * y->value);
+		}));
+	env.set("/", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			if (!x || !y)
+				throw std::invalid_argument(
+				    "not a number on symbol '/'");
+			return new MalNumber(x->value / y->value);
+		}));
+}
+
 static void rep(const String &s)
 {
 	MalEnv env;
+	init_env(env);
 	try {
 		const auto e = EVAL(READ(s), env);
 		if (e)

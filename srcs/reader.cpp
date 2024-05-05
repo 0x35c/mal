@@ -4,16 +4,11 @@
 
 MalType *read_str(const String &s)
 {
-	try {
-		std::vector<String> tokens = tokenize(s);
-		/* for (auto e : tokens) */
-		/* 	std::cout << e << std::endl; */
-		Reader reader(tokens);
-		return (read_form(reader));
-	} catch (std::invalid_argument e) {
-		std::cout << "Invalid format: " << e.what() << std::endl;
-		return (NULL);
-	}
+	std::vector<String> tokens = tokenize(s);
+	/* for (auto e : tokens) */
+	/* 	std::cout << e << std::endl; */
+	Reader reader(tokens);
+	return (read_form(reader));
 }
 
 static MalType *read_form(Reader &reader)
