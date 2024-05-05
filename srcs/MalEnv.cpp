@@ -1,26 +1,39 @@
 #include "MalEnv.hpp"
+#include <stdexcept>
 
 MalEnv::MalEnv()
 {
-	m_map["+"] = new MalFunc([](MalType *a, MalType *b) {
-		return dynamic_cast<MalType *>(
-		    new MalNumber(std::atoi(a->str(true).c_str()) +
-		                  std::atoi(b->str(true).c_str())));
+	m_map["+"] = new MalFunc([](MalType *a, MalType *b) -> MalType * {
+		const MalNumber *x = dynamic_cast<MalNumber *>(a);
+		const MalNumber *y = dynamic_cast<MalNumber *>(b);
+		if (!x || !y)
+			throw std::invalid_argument(
+			    "not a number on symbol '+'");
+		return new MalNumber(x->value + y->value);
 	});
-	m_map["-"] = new MalFunc([](MalType *a, MalType *b) {
-		return dynamic_cast<MalType *>(
-		    new MalNumber(std::atoi(a->str(true).c_str()) -
-		                  std::atoi(b->str(true).c_str())));
+	m_map["-"] = new MalFunc([](MalType *a, MalType *b) -> MalType * {
+		const MalNumber *x = dynamic_cast<MalNumber *>(a);
+		const MalNumber *y = dynamic_cast<MalNumber *>(b);
+		if (!x || !y)
+			throw std::invalid_argument(
+			    "not a number on symbol '-'");
+		return new MalNumber(x->value - y->value);
 	});
-	m_map["*"] = new MalFunc([](MalType *a, MalType *b) {
-		return dynamic_cast<MalType *>(
-		    new MalNumber(std::atoi(a->str(true).c_str()) *
-		                  std::atoi(b->str(true).c_str())));
+	m_map["*"] = new MalFunc([](MalType *a, MalType *b) -> MalType * {
+		const MalNumber *x = dynamic_cast<MalNumber *>(a);
+		const MalNumber *y = dynamic_cast<MalNumber *>(b);
+		if (!x || !y)
+			throw std::invalid_argument(
+			    "not a number on symbol '*'");
+		return new MalNumber(x->value * y->value);
 	});
-	m_map["/"] = new MalFunc([](MalType *a, MalType *b) {
-		return dynamic_cast<MalType *>(
-		    new MalNumber(std::atoi(a->str(true).c_str()) /
-		                  std::atoi(b->str(true).c_str())));
+	m_map["/"] = new MalFunc([](MalType *a, MalType *b) -> MalType * {
+		const MalNumber *x = dynamic_cast<MalNumber *>(a);
+		const MalNumber *y = dynamic_cast<MalNumber *>(b);
+		if (!x || !y)
+			throw std::invalid_argument(
+			    "not a number on symbol '/'");
+		return new MalNumber(x->value / y->value);
 	});
 };
 

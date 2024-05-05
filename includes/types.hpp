@@ -20,10 +20,9 @@ class MalType
 
 class MalNumber : public MalType
 {
-      private:
+      public:
 	int value;
 
-      public:
 	MalNumber() = delete;
 	MalNumber(int n) : value(n)
 	{
@@ -40,10 +39,9 @@ class MalNumber : public MalType
 
 class MalSymbol : public MalType
 {
-      private:
+      public:
 	String value;
 
-      public:
 	MalSymbol() = delete;
 	MalSymbol(const String &s) : value(s)
 	{
@@ -108,10 +106,9 @@ class MalFalse : public MalType
 
 class MalString : public MalType
 {
-      private:
+      public:
 	String value;
 
-      public:
 	MalString() = delete;
 	MalString(const String &s) : value(s)
 	{
@@ -186,12 +183,11 @@ class MalList : public MalType
 
 class MalFunc : public MalType
 {
-      private:
-	MalType::SymbolFuncPtr m_fn;
-
       public:
+	MalType::SymbolFuncPtr func;
+
 	MalFunc() = delete;
-	MalFunc(MalType::SymbolFuncPtr fn) : m_fn(fn)
+	MalFunc(MalType::SymbolFuncPtr fn) : func(fn)
 	{
 		type = MalType::Type::FUNC;
 	};
@@ -200,7 +196,7 @@ class MalFunc : public MalType
 
 	MalType *apply(MalType *a, MalType *b) const
 	{
-		return m_fn(a, b);
+		return func(a, b);
 	}
 
 	virtual String str(bool) const
