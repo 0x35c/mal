@@ -1,4 +1,4 @@
-#include "Environment.hpp"
+#include "MalEnv.hpp"
 #include "Reader.hpp"
 #include "printer.hpp"
 #include "readline.hpp"
@@ -8,7 +8,7 @@ static MalType *READ(const String &s)
 	return read_str(s);
 }
 
-static MalType *EVAL(MalType *ast, MalEnv env)
+MalType *EVAL(MalType *ast, MalEnv env)
 {
 	MalList *list = dynamic_cast<MalList *>(ast);
 	if (!list)
@@ -16,7 +16,12 @@ static MalType *EVAL(MalType *ast, MalEnv env)
 	if (list->empty())
 		return ast;
 	MalList *new_list = dynamic_cast<MalList *>(eval_ast(ast, env));
-	return ast;
+	if (!new_list)
+		return NULL;
+	MalFunc *func = dynamic_cast<MalFunc *>(new_list->list[0]);
+	if (func)
+		return func->apply(new_list->list[1], new_list->list[2]);
+	return NULL;
 }
 
 static const String PRINT(MalType *ast)
@@ -28,7 +33,10 @@ static void rep(const String &s)
 {
 	MalEnv env;
 	const auto e = EVAL(READ(s), env);
-	std::cout << PRINT(e) << std::endl;
+	if (e)
+		std::cout << PRINT(e) << std::endl;
+	else
+		std::cerr << "error during execution" << std::endl;
 	delete e;
 }
 

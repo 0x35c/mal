@@ -18,7 +18,8 @@ SRCS := main.cpp\
 		utils.cpp\
 		reader.cpp\
 		printer.cpp\
-		eval.c
+		eval.cpp\
+		MalEnv.cpp
 
 CC := g++
 

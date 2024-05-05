@@ -8,9 +8,10 @@ typedef std::string String;
 class MalType
 {
       public:
+	typedef MalType *(*SymbolFuncPtr)(MalType *, MalType *);
 	virtual ~MalType(){};
 
-	enum Type { NUMBER, SYMBOL, NIL, TRUE, FALSE, STRING, LIST };
+	enum Type { NUMBER, SYMBOL, NIL, TRUE, FALSE, STRING, LIST, FUNC };
 
 	Type type;
 
@@ -23,6 +24,7 @@ class MalNumber : public MalType
 	int value;
 
       public:
+	MalNumber() = delete;
 	MalNumber(int n) : value(n)
 	{
 		type = MalType::Type::NUMBER;
@@ -42,6 +44,7 @@ class MalSymbol : public MalType
 	String value;
 
       public:
+	MalSymbol() = delete;
 	MalSymbol(const String &s) : value(s)
 	{
 		type = MalType::Type::SYMBOL;
@@ -109,6 +112,7 @@ class MalString : public MalType
 	String value;
 
       public:
+	MalString() = delete;
 	MalString(const String &s) : value(s)
 	{
 		type = MalType::Type::STRING;
@@ -143,10 +147,9 @@ class MalString : public MalType
 
 class MalList : public MalType
 {
-      private:
+      public:
 	std::vector<MalType *> list;
 
-      public:
 	MalList()
 	{
 		type = MalType::Type::LIST;
@@ -175,13 +178,33 @@ class MalList : public MalType
 		list.push_back(e);
 	}
 
-	const std::size_t size() const
-	{
-		return (list.size());
-	}
-
 	bool empty() const
 	{
-		return size() == 0;
+		return list.size() == 0;
 	}
+};
+
+class MalFunc : public MalType
+{
+      private:
+	MalType::SymbolFuncPtr m_fn;
+
+      public:
+	MalFunc() = delete;
+	MalFunc(MalType::SymbolFuncPtr fn) : m_fn(fn)
+	{
+		type = MalType::Type::FUNC;
+	};
+
+	virtual ~MalFunc(){};
+
+	MalType *apply(MalType *a, MalType *b) const
+	{
+		return m_fn(a, b);
+	}
+
+	virtual String str(bool) const
+	{
+		return "im a function now";
+	};
 };
