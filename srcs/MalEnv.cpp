@@ -1,17 +1,46 @@
 #include "MalEnv.hpp"
 #include <stdexcept>
 
-MalEnv::MalEnv() : m_outer(NULL){};
-
-MalEnv::MalEnv(const EnvMap &outer)
+MalEnv::MalEnv(MalEnv *outer) : m_outer(outer)
 {
-	m_outer = new MalEnv();
-	m_outer->m_map = outer;
+	this->set("+", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			  const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			  const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			  if (!x || !y)
+				  throw std::invalid_argument(
+				      "not a number on symbol '+'");
+			  return new MalNumber(x->value + y->value);
+		  }));
+	this->set("-", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			  const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			  const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			  if (!x || !y)
+				  throw std::invalid_argument(
+				      "not a number on symbol '-'");
+			  return new MalNumber(x->value - y->value);
+		  }));
+	this->set("*", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			  const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			  const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			  if (!x || !y)
+				  throw std::invalid_argument(
+				      "not a number on symbol '*'");
+			  return new MalNumber(x->value * y->value);
+		  }));
+	this->set("/", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			  const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			  const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			  if (!x || !y)
+				  throw std::invalid_argument(
+				      "not a number on symbol '/'");
+			  return new MalNumber(x->value / y->value);
+		  }));
 };
 
-void MalEnv::set(const String &key, MalType *value)
+MalType *MalEnv::set(const String &key, MalType *value)
 {
 	m_map.insert(std::make_pair(key, value));
+	return value;
 }
 
 MalType *MalEnv::find(const String &symbol)
@@ -27,6 +56,6 @@ MalType *MalEnv::get(const String &symbol)
 {
 	const auto value = find(symbol);
 	if (!value)
-		std::invalid_argument("symbol not found");
+		throw std::invalid_argument("symbol not found");
 	return value;
 }

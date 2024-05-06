@@ -2,6 +2,10 @@
 #include "utils.hpp"
 #include <iostream>
 
+static MalType *read_form(Reader &reader);
+static MalType *read_list(Reader &reader);
+static MalType *read_atom(Reader &reader);
+
 MalType *read_str(const String &s)
 {
 	std::vector<String> tokens = tokenize(s);

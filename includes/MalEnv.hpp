@@ -12,14 +12,15 @@ class MalEnv
 	MalEnv *m_outer;
 
       public:
-	MalEnv();
-	MalEnv(const EnvMap &outer);
+	// might change that later
+	MalEnv() = delete;
+	MalEnv(MalEnv *outer);
 
 	~MalEnv(){};
 
-	void set(const String &key, MalType *value);
+	MalType *set(const String &key, MalType *value);
 	MalType *find(const String &symbol);
 	MalType *get(const String &symbol);
 };
 
-MalType *EVAL(MalType *ast, MalEnv env);
+MalType *EVAL(MalType *ast, MalEnv &env);

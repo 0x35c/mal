@@ -13,46 +13,8 @@ static const String PRINT(MalType *ast)
 	return pr_str(ast, true);
 }
 
-void init_env(MalEnv &env)
+static void rep(const String &s, MalEnv &env)
 {
-	env.set("+", new MalFunc([](MalType *a, MalType *b) -> MalType * {
-			const MalNumber *x = dynamic_cast<MalNumber *>(a);
-			const MalNumber *y = dynamic_cast<MalNumber *>(b);
-			if (!x || !y)
-				throw std::invalid_argument(
-				    "not a number on symbol '+'");
-			return new MalNumber(x->value + y->value);
-		}));
-	env.set("-", new MalFunc([](MalType *a, MalType *b) -> MalType * {
-			const MalNumber *x = dynamic_cast<MalNumber *>(a);
-			const MalNumber *y = dynamic_cast<MalNumber *>(b);
-			if (!x || !y)
-				throw std::invalid_argument(
-				    "not a number on symbol '-'");
-			return new MalNumber(x->value - y->value);
-		}));
-	env.set("*", new MalFunc([](MalType *a, MalType *b) -> MalType * {
-			const MalNumber *x = dynamic_cast<MalNumber *>(a);
-			const MalNumber *y = dynamic_cast<MalNumber *>(b);
-			if (!x || !y)
-				throw std::invalid_argument(
-				    "not a number on symbol '*'");
-			return new MalNumber(x->value * y->value);
-		}));
-	env.set("/", new MalFunc([](MalType *a, MalType *b) -> MalType * {
-			const MalNumber *x = dynamic_cast<MalNumber *>(a);
-			const MalNumber *y = dynamic_cast<MalNumber *>(b);
-			if (!x || !y)
-				throw std::invalid_argument(
-				    "not a number on symbol '/'");
-			return new MalNumber(x->value / y->value);
-		}));
-}
-
-static void rep(const String &s)
-{
-	MalEnv env;
-	init_env(env);
 	try {
 		const auto e = EVAL(READ(s), env);
 		if (e)
@@ -60,8 +22,7 @@ static void rep(const String &s)
 		else
 			std::cerr << "error during execution"
 				  << std::endl; // TODO better error handling
-		delete e;
-	} catch (std::invalid_argument e) {
+	} catch (std::invalid_argument &e) {
 		std::cerr << "error during execution: " << e.what()
 			  << std::endl;
 	}
@@ -70,7 +31,8 @@ static void rep(const String &s)
 int main(void)
 {
 	String s;
+	MalEnv env(NULL);
 	while (Readline(String{std::getenv("USER")} + "> ", s))
-		rep(s);
+		rep(s, env);
 	return 0;
 }

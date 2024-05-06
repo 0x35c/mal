@@ -23,8 +23,7 @@ SRCS := main.cpp\
 
 CC := g++
 
-CFLAGS := -Wshadow -g -iquote includes --std=c++20 #-O2
-# -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -Wshadow -g -iquote includes --std=c++20 #-O2
 
 LIBS := -lreadline
 
