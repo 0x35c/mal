@@ -5,12 +5,12 @@
 class Reader
 {
       private:
-	std::vector<String> m_tokens;
+	StringVec m_tokens;
 	std::size_t m_position = 0;
 
       public:
 	Reader() = delete;
-	Reader(std::vector<String> tokens) : m_tokens(tokens){};
+	Reader(StringVec tokens) : m_tokens(tokens){};
 	~Reader(){};
 
 	String peek() const
@@ -21,11 +21,11 @@ class Reader
 	};
 	String next()
 	{
-		m_position++;
+		++m_position;
 		return (peek());
 	};
 };
 
-std::vector<String> tokenize(const String &s);
+StringVec tokenize(const String &s);
 
 MalType *read_str(const String &s);

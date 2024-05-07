@@ -21,7 +21,8 @@ static MalType *let(MalList *ast, Env &env)
 	if (!list)
 		throw std::invalid_argument(
 		    "can't let* without a list as argument");
-	Env new_env = new Env(&env);
+	// NOTE might need to put actual vectors
+	Env new_env = Env(&env, StringVec{}, MalVec{});
 	const auto size = list->list.size();
 	for (std::size_t i = 0; i < size - (size % 2); i += 2) {
 		const auto first = static_cast<MalSymbol *>(list->list[i]);

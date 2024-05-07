@@ -7,7 +7,7 @@ static MalType *read_atom(Reader &reader);
 
 MalType *read_str(const String &s)
 {
-	std::vector<String> tokens = tokenize(s);
+	StringVec tokens = tokenize(s);
 	/* for (auto e : tokens) */
 	/* 	std::cout << e << std::endl; */
 	Reader reader(tokens);

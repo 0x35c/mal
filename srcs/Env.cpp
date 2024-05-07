@@ -1,7 +1,17 @@
 #include "Env.hpp"
 #include <stdexcept>
 
-Env::Env(Env *outer) : m_outer(outer){};
+Env::Env(Env *outer, const StringVec binds, MalVec exprs) : m_outer(outer)
+{
+	MalIter it = exprs.begin();
+	for (auto key : binds) {
+		// NOTE idk yet if we can have different size of binds and exprs
+		if (it == exprs.end())
+			break;
+		set(key, *it);
+		++it;
+	}
+};
 
 Env::~Env(){
     /* for (auto e : m_map) */

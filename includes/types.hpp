@@ -5,7 +5,11 @@
 #include <string>
 #include <vector>
 
+class MalType;
+
 typedef std::string String;
+typedef std::vector<String> StringVec;
+typedef std::vector<MalType *> MalVec;
 
 class MalType
 {
@@ -147,7 +151,7 @@ class MalString : public MalType
 class MalList : public MalType
 {
       public:
-	std::vector<MalType *> list;
+	MalVec list;
 
 	MalList()
 	{
@@ -203,6 +207,6 @@ class MalFunc : public MalType
 
 	virtual String str(bool) const
 	{
-		return "im a function now";
+		return "#<func>";
 	};
 };

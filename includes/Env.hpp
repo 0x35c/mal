@@ -4,6 +4,7 @@
 #include <map>
 
 typedef std::map<String, MalType *> EnvMap;
+typedef MalVec::iterator MalIter;
 
 class Env
 {
@@ -14,7 +15,7 @@ class Env
       public:
 	// might change that later
 	Env() = delete;
-	Env(Env *outer);
+	Env(Env *outer, const StringVec binds, MalVec exprs);
 
 	~Env();
 
