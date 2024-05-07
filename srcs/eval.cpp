@@ -55,6 +55,7 @@ MalType *EVAL(MalType *ast, Env &env)
 				return func->apply(new_list->list[1],
 				                   new_list->list[2]);
 		}
+		delete new_list;
 	}
 	return (eval_ast(ast, env));
 }
@@ -62,14 +63,16 @@ MalType *EVAL(MalType *ast, Env &env)
 static MalType *eval_ast(MalType *ast, Env &env)
 {
 	switch (ast->type) {
-	case MalType::SYMBOL:
-		return env.get(static_cast<MalSymbol *>(ast)->value);
+	case MalType::SYMBOL: {
+		auto symbol = static_cast<MalSymbol *>(ast)->value;
+		delete ast;
+		return env.get(symbol);
+	}
 	case MalType::LIST: {
 		MalList *list = static_cast<MalList *>(ast);
-		auto copy = new MalList;
 		for (std::size_t i = 0; i < list->list.size(); ++i)
-			copy->add(EVAL(list->list[i], env));
-		return copy;
+			list->list[i] = EVAL(list->list[i], env);
+		return list;
 	}
 	default:
 		return ast;

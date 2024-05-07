@@ -16,13 +16,15 @@ static const String PRINT(MalType *ast)
 static void rep(const String &s, Env &env)
 {
 	try {
-		const auto e = EVAL(READ(s), env);
-		if (e)
-			std::cout << PRINT(e) << std::endl;
+		auto in = READ(s);
+		auto out = EVAL(in, env);
+		delete in;
+		if (out)
+			std::cout << PRINT(out) << std::endl;
 		else
 			std::cerr << "error during execution"
 				  << std::endl; // TODO better error handling
-		delete e;
+		delete out;
 	} catch (std::invalid_argument &e) {
 		std::cerr << "error during execution: " << e.what()
 			  << std::endl;

@@ -21,6 +21,7 @@ class MalType
 
 	Type type;
 
+	virtual MalType *dup() const = 0;
 	virtual String str(bool print_readably) const = 0;
 };
 
@@ -36,6 +37,11 @@ class MalNumber : public MalType
 	};
 
 	virtual ~MalNumber(){};
+
+	virtual MalType *dup() const
+	{
+		return new MalNumber(value);
+	};
 
 	virtual String str(bool) const
 	{
@@ -56,6 +62,11 @@ class MalSymbol : public MalType
 
 	virtual ~MalSymbol(){};
 
+	virtual MalType *dup() const
+	{
+		return new MalSymbol(value);
+	};
+
 	virtual String str(bool) const
 	{
 		return value;
@@ -71,6 +82,11 @@ class MalNil : public MalType
 	};
 
 	virtual ~MalNil(){};
+
+	virtual MalType *dup() const
+	{
+		return new MalNil();
+	};
 
 	virtual String str(bool) const
 	{
@@ -88,6 +104,11 @@ class MalTrue : public MalType
 
 	virtual ~MalTrue(){};
 
+	virtual MalType *dup() const
+	{
+		return new MalTrue();
+	};
+
 	virtual String str(bool) const
 	{
 		return "TRUE";
@@ -103,6 +124,11 @@ class MalFalse : public MalType
 	};
 
 	virtual ~MalFalse(){};
+
+	virtual MalType *dup() const
+	{
+		return new MalFalse();
+	};
 
 	virtual String str(bool) const
 	{
@@ -122,6 +148,11 @@ class MalString : public MalType
 	};
 
 	virtual ~MalString(){};
+
+	virtual MalType *dup() const
+	{
+		return new MalString(value);
+	};
 
 	virtual String str(bool print_readably) const
 	{
@@ -158,10 +189,17 @@ class MalList : public MalType
 		type = MalType::Type::LIST;
 	};
 
-	virtual ~MalList()
+	virtual ~MalList(){
+	    /* for (auto e : list) */
+	    /* 	delete e; */
+	};
+
+	virtual MalType *dup() const
 	{
-		for (auto it : list)
-			delete it;
+		auto cpy = new MalList;
+		for (auto e : list)
+			cpy->add(e->dup());
+		return cpy;
 	};
 
 	virtual String str(bool print_readably) const
@@ -200,13 +238,18 @@ class MalFunc : public MalType
 
 	virtual ~MalFunc(){};
 
-	MalType *apply(MalType *a, MalType *b) const
+	virtual MalType *dup() const
 	{
-		return func(a, b);
-	}
+		return new MalFunc(func);
+	};
 
 	virtual String str(bool) const
 	{
 		return "#<func>";
 	};
+
+	MalType *apply(MalType *a, MalType *b) const
+	{
+		return func(a, b);
+	}
 };

@@ -3,6 +3,29 @@
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
+   fun:xmalloc
+   fun:alloc_history_entry
+   fun:add_history
+   fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: definite
+   fun:malloc
+   fun:xmalloc
+   fun:readline_internal_teardown
+   fun:UnknownInlinedFun
+   fun:readline
+   fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
    fun:strdup
    fun:_nc_setupterm
    fun:tgetent_sp
@@ -29,6 +52,21 @@
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
+   fun:strdup
+   fun:_nc_trim_sgr0
+   fun:tgetent_sp
+   fun:_rl_init_terminal_io
+   fun:UnknownInlinedFun
+   fun:rl_initialize
+   fun:readline
+   fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
    fun:xmalloc
    fun:expand_prompt
    fun:rl_expand_prompt
@@ -41,26 +79,11 @@
    <insert_a_suppression_name_here>
    Memcheck:Leak
    match-leak-kinds: reachable
-   fun:malloc
+   fun:realloc
    fun:xrealloc
    fun:expand_prompt
    fun:rl_expand_prompt
    fun:rl_set_prompt
-   fun:readline
-   fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
-   fun:main
-}
-{
-   <insert_a_suppression_name_here>
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   fun:malloc
-   fun:strdup
-   fun:_nc_trim_sgr0
-   fun:tgetent_sp
-   fun:_rl_init_terminal_io
-   fun:UnknownInlinedFun
-   fun:rl_initialize
    fun:readline
    fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
    fun:main
@@ -119,9 +142,19 @@
    match-leak-kinds: reachable
    fun:malloc
    fun:xmalloc
-   fun:_rl_init_locale
-   fun:_rl_init_eightbit
    fun:UnknownInlinedFun
+   fun:add_history
+   fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   fun:_rl_init_locale
+   fun:_rl_reset_locale
    fun:rl_initialize
    fun:readline
    fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
@@ -219,6 +252,17 @@
    fun:UnknownInlinedFun
    fun:rl_initialize
    fun:readline
+   fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   fun:alloc_history_entry
+   fun:add_history
    fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
    fun:main
 }
@@ -723,6 +767,16 @@
    fun:UnknownInlinedFun
    fun:rl_initialize
    fun:readline
+   fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
+   fun:main
+}
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   match-leak-kinds: reachable
+   fun:malloc
+   fun:xmalloc
+   fun:add_history
    fun:_Z8ReadlineNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEERS4_
    fun:main
 }

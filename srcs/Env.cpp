@@ -13,9 +13,10 @@ Env::Env(Env *outer, const StringVec binds, MalVec exprs) : m_outer(outer)
 	}
 };
 
-Env::~Env(){
-    /* for (auto e : m_map) */
-    /* 	delete e.second; */
+Env::~Env()
+{
+	for (auto it = m_map.begin(); it != m_map.end(); ++it)
+		delete it->second;
 };
 
 void Env::set(const String &key, MalType *value)

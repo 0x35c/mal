@@ -46,8 +46,11 @@ re:
 	make clean
 	make all
 
-vg:
+vg: all
 	valgrind --show-leak-kinds=all --track-origins=yes --leak-check=full --track-fds=yes --suppressions=readline.supp ./$(NAME)
+
+log: all
+	valgrind --show-leak-kinds=all --track-origins=yes --leak-check=full --track-fds=yes --suppressions=readline.supp ./$(NAME) 2> log
 
 run:
 	@./$(NAME)

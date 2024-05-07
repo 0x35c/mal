@@ -9,7 +9,7 @@ typedef MalVec::iterator MalIter;
 class Env
 {
       private:
-	EnvMap m_map;
+	EnvMap m_map{};
 	Env *m_outer;
 
       public:
