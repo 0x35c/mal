@@ -1,6 +1,5 @@
 #include "Reader.hpp"
 #include "utils.hpp"
-#include <iostream>
 
 static MalType *read_form(Reader &reader);
 static MalType *read_list(Reader &reader);
@@ -44,11 +43,11 @@ static MalType *read_atom(Reader &reader)
 	else if (tok[0] == '"')
 		return new MalString(tok);
 	else if (tok == "true")
-		return new MalTrue();
+		return new MalTrue;
 	else if (tok == "false")
-		return new MalFalse();
+		return new MalFalse;
 	else if (tok.empty())
-		return new MalNil();
+		return new MalNil;
 	else
 		return new MalSymbol(tok);
 }

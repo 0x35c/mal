@@ -1,4 +1,4 @@
-#include "MalEnv.hpp"
+#include "Env.hpp"
 #include "Reader.hpp"
 #include "printer.hpp"
 #include "readline.hpp"
@@ -13,7 +13,7 @@ static const String PRINT(MalType *ast)
 	return pr_str(ast, true);
 }
 
-static void rep(const String &s, MalEnv &env)
+static void rep(const String &s, Env &env)
 {
 	try {
 		const auto e = EVAL(READ(s), env);
@@ -28,10 +28,48 @@ static void rep(const String &s, MalEnv &env)
 	}
 }
 
+static void init_env(Env &env)
+{
+
+	env.set("+", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			if (!x || !y)
+				throw std::invalid_argument(
+				    "not a number on symbol '+'");
+			return new MalNumber(x->value + y->value);
+		}));
+	env.set("-", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			if (!x || !y)
+				throw std::invalid_argument(
+				    "not a number on symbol '-'");
+			return new MalNumber(x->value - y->value);
+		}));
+	env.set("*", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			if (!x || !y)
+				throw std::invalid_argument(
+				    "not a number on symbol '*'");
+			return new MalNumber(x->value * y->value);
+		}));
+	env.set("/", new MalFunc([](MalType *a, MalType *b) -> MalType * {
+			const MalNumber *x = dynamic_cast<MalNumber *>(a);
+			const MalNumber *y = dynamic_cast<MalNumber *>(b);
+			if (!x || !y)
+				throw std::invalid_argument(
+				    "not a number on symbol '/'");
+			return new MalNumber(x->value / y->value);
+		}));
+}
+
 int main(void)
 {
 	String s;
-	MalEnv env(NULL);
+	Env env(NULL);
+	init_env(env);
 	while (Readline(String{std::getenv("USER")} + "> ", s))
 		rep(s, env);
 	return 0;
