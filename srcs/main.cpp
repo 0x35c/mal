@@ -102,5 +102,6 @@ int main(void)
 	Env env(NULL, binds, exprs.get());
 	while (Readline(String{std::getenv("USER")} + "> ", s))
 		rep(s, env);
+	rl_uninitialize();
 	return 0;
 }

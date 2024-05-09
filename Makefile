@@ -47,10 +47,10 @@ re:
 	make all
 
 vg: all
-	valgrind --show-leak-kinds=all --track-origins=yes --leak-check=full --track-fds=yes --suppressions=readline.supp ./$(NAME)
+	valgrind --show-leak-kinds=all --track-origins=yes --leak-check=full --track-fds=yes ./$(NAME)
 
 log: all
-	valgrind --show-leak-kinds=all --track-origins=yes --leak-check=full --track-fds=yes --suppressions=readline.supp ./$(NAME) 2> log
+	valgrind --show-leak-kinds=all --track-origins=yes --leak-check=full --track-fds=yes ./$(NAME) 2> log
 
 run:
 	@./$(NAME)

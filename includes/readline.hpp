@@ -2,10 +2,7 @@
 
 #include <iostream>
 
-#include <stdio.h>
-
-#include <readline/history.h>
-#include <readline/readline.h>
+#include <editline.h>
 
 #include "types.hpp"
 

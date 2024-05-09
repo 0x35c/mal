@@ -8,5 +8,6 @@ bool Readline(String prompt, String &output)
 	if (out && *out)
 		add_history(out);
 	output = out;
+	free(out);
 	return (true);
 }
