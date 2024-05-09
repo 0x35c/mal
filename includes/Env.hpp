@@ -3,7 +3,7 @@
 #include "types.hpp"
 #include <map>
 
-typedef std::map<String, MalType *> EnvMap;
+typedef std::map<String, std::unique_ptr<MalType>> EnvMap;
 typedef MalVec::iterator MalIter;
 
 class Env
@@ -15,7 +15,7 @@ class Env
       public:
 	// might change that later
 	Env() = delete;
-	Env(Env *outer, const StringVec binds, MalVec exprs);
+	Env(Env *outer, const StringVec &binds, MalList *exprs);
 
 	~Env();
 

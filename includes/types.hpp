@@ -1,20 +1,22 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 class MalType;
+class MalList;
 
 typedef std::string String;
 typedef std::vector<String> StringVec;
-typedef std::vector<MalType *> MalVec;
+typedef std::vector<std::unique_ptr<MalType>> MalVec;
 
 class MalType
 {
       public:
-	typedef MalType *(*SymbolFuncPtr)(MalType *, MalType *);
+	typedef MalType *(*SymbolFuncPtr)(MalList *);
 	virtual ~MalType(){};
 
 	enum Type { NUMBER, SYMBOL, NIL, TRUE, FALSE, STRING, LIST, FUNC };
@@ -188,25 +190,25 @@ class MalList : public MalType
 	{
 		type = MalType::Type::LIST;
 	};
+	MalList(const MalList &ref)
+	{
+		type = ref.type;
+		for (auto &e : ref.list)
+			add(e->dup());
+	}
 
-	virtual ~MalList(){
-	    /* for (auto e : list) */
-	    /* 	delete e; */
-	};
+	virtual ~MalList(){};
 
 	virtual MalType *dup() const
 	{
-		auto cpy = new MalList;
-		for (auto e : list)
-			cpy->add(e->dup());
-		return cpy;
+		return new MalList(*this);
 	};
 
 	virtual String str(bool print_readably) const
 	{
 		String s = "(";
-		for (auto it : list) {
-			s += it->str(print_readably) + " ";
+		for (auto &e : list) {
+			s += e->str(print_readably) + " ";
 		};
 		if (s.at(s.length() - 1) == ' ')
 			s.erase(s.length() - 1, 1);
@@ -216,7 +218,7 @@ class MalList : public MalType
 
 	void add(MalType *e)
 	{
-		list.push_back(e);
+		list.push_back(std::unique_ptr<MalType>(e));
 	}
 
 	bool empty() const
@@ -248,8 +250,8 @@ class MalFunc : public MalType
 		return "#<func>";
 	};
 
-	MalType *apply(MalType *a, MalType *b) const
+	MalType *apply(MalList *list) const
 	{
-		return func(a, b);
+		return func(list);
 	}
 };

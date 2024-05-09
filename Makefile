@@ -25,7 +25,7 @@ CC := g++
 
 CFLAGS := -Wall -Wextra -Werror -Wshadow -g -iquote includes --std=c++20 #-O2
 
-LIBS := -lreadline
+LIBS := -leditline
 
 OBJS := $(addprefix objs/, $(SRCS:.cpp=.o))
 

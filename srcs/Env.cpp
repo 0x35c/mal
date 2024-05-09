@@ -1,27 +1,21 @@
 #include "Env.hpp"
-#include <stdexcept>
 
-Env::Env(Env *outer, const StringVec binds, MalVec exprs) : m_outer(outer)
+Env::Env(Env *outer, const StringVec &binds, MalList *exprs) : m_outer(outer)
 {
-	MalIter it = exprs.begin();
-	for (auto key : binds) {
-		// NOTE idk yet if we can have different size of binds and exprs
-		if (it == exprs.end())
-			break;
-		set(key, *it);
-		++it;
+	if (binds.empty() && !exprs)
+		return;
+	if (!exprs)
+		throw std::invalid_argument("exprs is null");
+	for (std::size_t i = 0; i < binds.size(); i++) {
+		set(binds[i], exprs->list[i].get());
 	}
 };
 
-Env::~Env()
-{
-	for (auto it = m_map.begin(); it != m_map.end(); ++it)
-		delete it->second;
-};
+Env::~Env(){};
 
 void Env::set(const String &key, MalType *value)
 {
-	m_map.insert_or_assign(key, value);
+	m_map.insert_or_assign(key, std::unique_ptr<MalType>(value));
 }
 
 Env *Env::find(const String &symbol)
@@ -38,5 +32,5 @@ MalType *Env::get(const String &symbol)
 	Env *env = this->find(symbol);
 	if (!env)
 		throw std::invalid_argument("symbol not found");
-	return env->m_map[symbol];
+	return env->m_map[symbol].get();
 }
