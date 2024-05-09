@@ -23,6 +23,7 @@ static void rep(const String &s, Env &env)
 		else
 			std::cerr << "error during execution"
 				  << std::endl; // TODO better error handling
+		delete out;
 	} catch (std::invalid_argument &e) {
 		std::cerr << "error during execution: " << e.what()
 			  << std::endl;
@@ -80,7 +81,7 @@ static void init_env(StringVec &binds, MalList *exprs)
 			const auto e = list->list[i].get();
 			if (e->type != MalType::NUMBER)
 				throw std::invalid_argument(
-				    "not a number on symbol '-'");
+				    "not a number on symbol '/'");
 			const auto nb = static_cast<MalNumber *>(e)->value;
 			if (i != 1 && nb == 0)
 				return new MalNil();

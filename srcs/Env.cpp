@@ -15,7 +15,7 @@ Env::~Env(){};
 
 void Env::set(const String &key, MalType *value)
 {
-	m_map.insert_or_assign(key, std::unique_ptr<MalType>(value));
+	m_map.insert_or_assign(key, std::unique_ptr<MalType>(value->dup()));
 }
 
 Env *Env::find(const String &symbol)
