@@ -27,8 +27,9 @@ static MalType *let(MalList *ast, Env &env)
 	for (std::size_t i = 0; i < size - (size % 2); i += 2) {
 		const auto first =
 		    static_cast<MalSymbol *>(list->list[i].get());
-		const auto second = eval_ast(list->list[i + 1].get(), new_env);
-		new_env.set(first->value, second);
+		const auto second = std::unique_ptr<MalType>(
+		    eval_ast(list->list[i + 1].get(), new_env));
+		new_env.set(first->value, second.get());
 	}
 	return EVAL(ast->list[2].get(), new_env);
 }
